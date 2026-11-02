@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../database/manejador_clientes.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/cliente.dart';
@@ -64,10 +68,13 @@ class _DetalleClientePageState extends State<DetalleClientePage> {
       builder: (_) => const Center(child: CircularProgressIndicator()),
     );
 
-    //Logica de delete de Cliente ...
+    final id = _clienteActual.id;
+    if (id != null) {
+      await context.read<ManejadorClientes>().eliminar(id);
+    }
 
     if (mounted) {
-      Navigator.pop(context);
+      Navigator.pop(context); // Cierra el indicador de progreso / diálogo
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -75,7 +82,7 @@ class _DetalleClientePageState extends State<DetalleClientePage> {
           backgroundColor: Colors.green,
         ),
       );
-      Navigator.pop(context);
+      Navigator.pop(context); // Regresa al listado
     }
   }
 

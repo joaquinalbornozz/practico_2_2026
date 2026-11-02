@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
 import '../../models/cliente.dart';
+import 'package:provider/provider.dart';
+import '../../database/manejador_clientes.dart';
 import '../../utils/responsive.dart';
 
 class EditarClientePage extends StatefulWidget {
@@ -39,7 +40,20 @@ class _EditarClientePageState extends State<EditarClientePage> {
     setState(() => _isLoading = true);
 
     try {
-      // Logica de Update para Cliente...
+      final id = widget.cliente.id;
+      if (id != null) {
+        await context.read<ManejadorClientes>().actualizar(
+              id,
+              _nombreController.text.trim(),
+              _telefonoController.text.trim(),
+            );
+      }
+
+      final clienteEditado = Cliente(
+        id: widget.cliente.id,
+        nombre: _nombreController.text.trim(),
+        telefono: _telefonoController.text.trim(),
+      );
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -48,8 +62,7 @@ class _EditarClientePageState extends State<EditarClientePage> {
             backgroundColor: Colors.green,
           ),
         );
-        //Navigator.pop(context, clienteEditado);
-        Navigator.pop(context, widget.cliente);
+        Navigator.pop(context, clienteEditado);
       }
     } catch (e) {
       if (mounted) {

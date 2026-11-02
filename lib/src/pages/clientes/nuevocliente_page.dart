@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../database/manejador_clientes.dart';
 import '../../utils/responsive.dart';
 
 class NuevoClientePage extends StatefulWidget {
@@ -29,7 +31,11 @@ class _NuevoClientePageState extends State<NuevoClientePage> {
     setState(() => _isLoading = true);
 
     try {
-      //logica de create de Cliente ...
+      // Inserción en SQLite a través del manejador
+      await context.read<ManejadorClientes>().agregar(
+            _nombreController.text.trim(),
+            _telefonoController.text.trim(),
+          );
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
