@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 import '../models/producto.dart';
-import 'database.dart';
+import 'database.dart' hide Producto;
 
 class ManejadorProductos {
   final AppDatabase db;
@@ -41,11 +41,11 @@ class ManejadorProductos {
     if (intId == null) return Future.value(false);
 
     return db.update(db.productos).replace(
-      ProductoData(
-        id: intId,
-        nombre: nombre,
-        precio: precio,
-        imagen: imagen,
+      ProductosCompanion(
+        id: Value(intId),
+        nombre: Value(nombre),
+        precio: Value(precio),
+        imagen: Value(imagen),
       ),
     );
   }
