@@ -4,6 +4,7 @@ import '../../components/visorimagen_page.dart';
 import '../../models/producto.dart';
 import '../../utils/responsive.dart';
 import '../../database/manejador_productos.dart';
+import 'package:provider/provider.dart';
 
 class DetalleProductoPage extends StatefulWidget {
   final Producto producto;
@@ -65,11 +66,12 @@ class _DetalleProductoPageState extends State<DetalleProductoPage> {
   Future<void> _ejecutarBorrado(BuildContext context) async {
     //logica delete de Producto...
     // ✅ Conectar producto con la base de datos por medio del manejador
-    final manejador = ManejadorProductos();
+    // final manejador = ManejadorProductos();
 
     // _productoActual.id es String?, se envía directo al manejador:
     if (_productoActual.id != null) {
-      await manejador.eliminar(_productoActual.id!);
+      //await manejador.eliminar(_productoActual.id!);
+      await context.read<ManejadorProductos>().eliminar(_productoActual.id!);
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

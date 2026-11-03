@@ -19,6 +19,8 @@
 - Conectar el catalogo (`lib/src/pages/productos/productos_page.dart`) a la base de datos por medio del manejador (`_manejador.listar()`).
 - Conectar el nuevo producto (`lib/src/pages/productos/nuevoproducto_page.dart`) a la base de datos por medio del manejador (`_manejador.agregar(...)`).
 - Conectar la edición de producto (`lib/src/pages/productos/editarproducto_page.dart`) a la base de datos por medio del manejador (`Future<void> _guardarProducto()`).
+- Añadir el provider al main para trabajar con una misma instancia de la base de datos.
+- Usar el provider en nuevoproducto_page.dart, editarproducto_page.dart y producto_page.dart.
 
 ## Correcciones de Build y Entorno Android
 
