@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../components/visorimagen_page.dart';
 import '../../models/producto.dart';
 import '../../utils/responsive.dart';
+import '../../database/manejador_productos.dart';
 
 class ProductosPage extends StatefulWidget {
   const ProductosPage({super.key});
@@ -12,6 +13,7 @@ class ProductosPage extends StatefulWidget {
 }
 
 class _ProductosPageState extends State<ProductosPage> {
+  /* ✅
   Future<List<Producto>> futureProductos() async {
     await Future.delayed(const Duration(seconds: 2));
     return [
@@ -24,6 +26,16 @@ class _ProductosPageState extends State<ProductosPage> {
   Stream<List<Producto>> getProductos() async* {
     yield await futureProductos();
   }
+  */
+
+  // ✅ Conectar catalogo a la base de datos por medio del manejador
+  final _manejador = ManejadorProductos();
+
+  Stream<List<Producto>> getProductos() {
+    return _manejador.listar();
+  }
+
+  // ---
 
   @override
   Widget build(BuildContext context) {
