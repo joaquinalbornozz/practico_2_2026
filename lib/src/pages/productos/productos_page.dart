@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../components/visorimagen_page.dart';
 import '../../models/producto.dart';
 import '../../utils/responsive.dart';
+import '../../database/manejador_productos.dart';
+import 'package:provider/provider.dart';
 
 class ProductosPage extends StatefulWidget {
   const ProductosPage({super.key});
@@ -12,6 +14,7 @@ class ProductosPage extends StatefulWidget {
 }
 
 class _ProductosPageState extends State<ProductosPage> {
+  /* ✅
   Future<List<Producto>> futureProductos() async {
     await Future.delayed(const Duration(seconds: 2));
     return [
@@ -24,6 +27,16 @@ class _ProductosPageState extends State<ProductosPage> {
   Stream<List<Producto>> getProductos() async* {
     yield await futureProductos();
   }
+  */
+
+  // ✅ Conectar catalogo a la base de datos por medio del manejador
+  final _manejador = ManejadorProductos();
+
+  Stream<List<Producto>> getProductos() {
+    return _manejador.listar();
+  }
+
+  // ---
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +46,8 @@ class _ProductosPageState extends State<ProductosPage> {
       appBar: AppBar(title: const Text('Mis Productos'), elevation: 0),
       body: SafeArea(
         child: StreamBuilder<List<Producto>>(
-          stream: getProductos(),
+          //stream: getProductos(),
+          stream: Provider.of<ManejadorProductos>(context).listar(),
           builder: (context, asyncSnapshot) {
             if (asyncSnapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -48,8 +62,16 @@ class _ProductosPageState extends State<ProductosPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
+        // ✅ 
+        /*
         onPressed: () {
           Navigator.pushNamed(context, '/nuevo_producto');
+        },
+        */
+        // ✅ 
+        onPressed: () async {
+          await Navigator.pushNamed(context, '/nuevo_producto');
+          if (mounted) setState(() {});
         },
         icon: const Icon(Icons.add),
         label: const Text('Nuevo Producto'),

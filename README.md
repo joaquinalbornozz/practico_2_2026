@@ -16,3 +16,22 @@
 - Desacoplador de la BBDD: `lib/src/database/database.dart`
 - Manejador de productos: `lib/src/database/manejador_productos.dart`
 - Generar la migración: `dart run build_runner build --delete-conflicting-outputs`
+- Conectar el catalogo (`lib/src/pages/productos/productos_page.dart`) a la base de datos por medio del manejador (`_manejador.listar()`).
+- Conectar el nuevo producto (`lib/src/pages/productos/nuevoproducto_page.dart`) a la base de datos por medio del manejador (`_manejador.agregar(...)`).
+- Conectar la edición de producto (`lib/src/pages/productos/editarproducto_page.dart`) a la base de datos por medio del manejador (`Future<void> _guardarProducto()`).
+- Añadir el provider al main para trabajar con una misma instancia de la base de datos.
+- Usar el provider en nuevoproducto_page.dart, editarproducto_page.dart y producto_page.dart.
+
+## Correcciones de Build y Entorno Android
+
+### 1. Fijación de versión de NDK instalada
+- **Motivo:** Gradle requería automáticamente NDK `28.2.13676358` (`Android sdkmanager did not install NDK...`), pero en el SDK local de Android la versión instalada era la `30.0.16138531`.
+- **Archivo modificado:** `android/app/build.gradle.kts`
+- **Valor original:** `ndkVersion = flutter.ndkVersion`
+- **Nuevo valor:** `ndkVersion = "30.0.16138531"`
+
+### 2. Desactivación de compilación incremental de Kotlin
+- **Motivo:** En Windows, al estar el proyecto en un disco (`D:\`) diferente al SDK y caché de Pub (`C:\`), el daemon de Kotlin falla al calcular rutas relativas entre unidades distintas (`Could not close incremental caches ... class-fq-name-to-source.tab`).
+- **Archivo modificado:** `android/gradle.properties`
+- **Valor original:** *(No existía, por defecto Kotlin compila de forma incremental)*
+- **Nuevo valor:** `kotlin.incremental=false`

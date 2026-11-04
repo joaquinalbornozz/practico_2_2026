@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../utils/responsive.dart';
+import '../../database/manejador_productos.dart';
+import 'package:provider/provider.dart';
 
 class NuevoProductoPage extends StatefulWidget {
   const NuevoProductoPage({super.key});
@@ -99,6 +101,15 @@ class _NuevoProductoPageState extends State<NuevoProductoPage> {
       final double precio = double.parse(precioTexto);
 
       //logica de create de Producto
+      // ✅ Conectar nuevoproducto a la base de datos por medio del manejador
+      /*final manejador = ManejadorProductos();
+      await manejador.agregar(*/
+      // ✅ Uso del provider
+      await context.read<ManejadorProductos>().agregar(
+        _nombreController.text.trim(),
+        precio,
+        _imagenSeleccionada?.path ?? '',
+      );
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
